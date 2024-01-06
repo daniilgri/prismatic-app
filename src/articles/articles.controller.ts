@@ -44,17 +44,17 @@ export class ArticlesController {
 
   @Get(':id')
   @ApiOkResponse({ type: ArticleEntity })
-  async findOne(@Param('id') id: string): Promise<ArticleEntity> {
-    return this.articlesService.findOne(Number(id));
+  async findOne(@Param('id') id: number): Promise<ArticleEntity> {
+    return this.articlesService.findOne(id);
   }
 
   @Patch(':id')
   @ApiOkResponse({ type: ArticleEntity })
   async update(
-    @Param('id') id: string,
+    @Param('id') id: number,
     @Body() updateArticleDto: UpdateArticleDto,
   ): Promise<ArticleEntity> {
-    return this.articlesService.update(+id, updateArticleDto);
+    return this.articlesService.update(id, updateArticleDto);
   }
 
   @Delete(':id')

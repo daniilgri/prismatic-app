@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 
 import { CreateArticleDto } from './dto/create-article.dto';
 import { UpdateArticleDto } from './dto/update-article.dto';
@@ -26,7 +26,15 @@ export class ArticlesService {
   }
 
   async findOne(id: number): Promise<ArticleEntity> {
-    return this.databaseService.article.findUnique({ where: { id } });
+    const article = await this.databaseService.article.findUnique({
+      where: { id },
+    });
+
+    if (!article) {
+      throw new NotFoundException(`Article with ${id} does not exist.`);
+    }
+
+    return article;
   }
 
   async update(

@@ -1,12 +1,16 @@
+import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 import { AppModule } from './app.module';
+import { PrismaClientExceptionFilter } from './database/filters/prisma-client-exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.setGlobalPrefix('api');
+  app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true }));
+  app.useGlobalFilters(new PrismaClientExceptionFilter());
 
   const config = new DocumentBuilder()
     .setTitle('Prismatic')
